@@ -62,9 +62,11 @@ COMMON_INC :=	-I$(AUDIO_ROOT)/$(COMMON_DIR)
 #ifdef CONFIG_SND_SOC_TFA9874
 	TFA9874_OBJS += tfa98xx.o
 	TFA9874_OBJS += tfa_container.o
-	TFA9874_OBJS += tfa_debug.o
 	TFA9874_OBJS += tfa_dsp.o
 	TFA9874_OBJS += tfa_init.o
+#ifdef CONFIG_DEBUG_FS
+	TFA9874_OBJS += tfa_debug.o
+#endif
 #endif
 
 LINUX_INC +=	-Iinclude/linux
@@ -110,6 +112,3 @@ endif
 # Module information used by KBuild framework
 obj-$(CONFIG_SND_SOC_TFA9874) += tfa9874_dlkm.o
 tfa9874_dlkm-y := $(TFA9874_OBJS)
-
-# inject some build related information
-DEFINES += -DBUILD_TIMESTAMP=\"$(shell date -u +'%Y-%m-%dT%H:%M:%SZ')\"

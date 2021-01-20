@@ -10,7 +10,10 @@ ifeq ($(CONFIG_FB_MSM_MDSS_MDP3), y)
 ccflags-y += -DTARGET_HW_MDSS_MDP3
 endif
 mdss-mdp-objs := mdss_mdp.o mdss_mdp_ctl.o mdss_mdp_pipe.o mdss_mdp_util.o dsi_status_6g.o
-mdss-mdp-objs += mdss_mdp_pp.o mdss_mdp_pp_debug.o mdss_mdp_pp_cache_config.o mdss_sync.o
+mdss-mdp-objs += mdss_mdp_pp.o mdss_mdp_pp_cache_config.o mdss_sync.o
+ifdef CONFIG_DEBUG_KERNEL
+mdss-mdp-objs += mdss_mdp_pp_debug.o
+endif
 mdss-mdp-objs += mdss_mdp_intf_video.o
 mdss-mdp-objs += mdss_mdp_intf_cmd.o
 mdss-mdp-objs += mdss_mdp_intf_writeback.o
@@ -23,14 +26,13 @@ mdss-mdp-objs += mdss_smmu.o
 mdss-mdp-objs += mdss_mdp_wfd.o
 mdss-mdp-objs += mdss_io_util.o
 obj-$(CONFIG_FB_MSM_MDSS) += mdss-mdp.o
-obj-$(CONFIG_FB_MSM_MDSS) += mdss_mdp_debug.o
 
 mdss-mdp-objs += mdss_mdp_pp_v1_7.o
 mdss-mdp-objs += mdss_mdp_pp_v3.o
 mdss-mdp-objs += mdss_mdp_pp_common.o
 
 ifeq ($(CONFIG_FB_MSM_MDSS),y)
-obj-$(CONFIG_DEBUG_FS) += mdss_debug.o mdss_debug_xlog.o
+obj-$(CONFIG_DEBUG_FS) += mdss_debug.o mdss_debug_xlog.o mdss_mdp_debug.o
 endif
 
 ifeq ($(CONFIG_FB_MSM_MDSS_FRC_DEBUG),y)

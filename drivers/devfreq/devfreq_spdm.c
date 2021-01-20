@@ -30,11 +30,7 @@ static void *spdm_ipc_log_ctxt;
 #define DEVFREQ_SPDM_DEFAULT_WINDOW_MS 100
 #define SPDM_IPC_LOG_PAGES	5
 
-#define SPDM_IPC_LOG(x...)	do { \
-	pr_debug(x); \
-	if (spdm_ipc_log_ctxt) \
-		ipc_log_string(spdm_ipc_log_ctxt, x); \
-} while (0)
+#define SPDM_IPC_LOG(x...) ((void)0)
 
 #define COPY_SIZE(x, y) ((x) <= (y) ? (x) : (y))
 
@@ -365,7 +361,9 @@ static int probe(struct platform_device *pdev)
 		goto no_spdm_device;
 	}
 
+#ifdef DEBUG_FS
 	spdm_init_debugfs(&pdev->dev);
+#endif
 	spdm_ipc_log_ctxt = ipc_log_context_create(SPDM_IPC_LOG_PAGES,
 							"devfreq_spdm", 0);
 
@@ -396,7 +394,9 @@ static int remove(struct platform_device *pdev)
 
 	data = platform_get_drvdata(pdev);
 
+#ifdef CONFIG_DEBUG_FS
 	spdm_remove_debugfs(data);
+#endif
 
 	if (data->devfreq)
 		devfreq_remove_device(data->devfreq);

@@ -35,12 +35,7 @@
 #define gsi_readl(c)	({ u32 __v = readl_relaxed(c); __iormb(); __v; })
 #define gsi_writel(v, c)	({ __iowmb(); writel_relaxed((v), (c)); })
 
-#define GSI_IPC_LOGGING(buf, fmt, args...) \
-	do { \
-		if (buf) \
-			ipc_log_string((buf), fmt, __func__, __LINE__, \
-				## args); \
-	} while (0)
+#define GSI_IPC_LOGGING(buf, fmt, args...) ((void)0)
 
 #define GSIDBG(fmt, args...) \
 	do { \
@@ -315,7 +310,7 @@ enum gsi_generic_ee_cmd_return_code {
 };
 
 extern struct gsi_ctx *gsi_ctx;
-void gsi_debugfs_init(void);
+static inline void gsi_debugfs_init(void);
 uint16_t gsi_find_idx_from_addr(struct gsi_ring_ctx *ctx, uint64_t addr);
 void gsi_update_ch_dp_stats(struct gsi_chan_ctx *ctx, uint16_t used);
 
